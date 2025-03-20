@@ -72,6 +72,7 @@ The known plaintext header "ORDER:" allows recovery of the XOR key.
 XORing the ciphertext’s first bytes with "ORDER:" recovers the repeating key.
 
 ### Exploitation:
+Script: - [XOR Decryption](Order/xor_decrypt.py)
 
 **Key Recovery:**
 XOR the first 6 bytes of ciphertext with "ORDER:" to recover the key. This yields SNEAKY.
@@ -106,6 +107,8 @@ Note: The message is encrypted using the above function on the flag (FLAG variab
 
 **Exploitation:**
 Decryption: Reverse the process by subtracting the character’s index (mod 26) for letters, while leaving non‑letters unchanged.
+
+Script: - [Shifting Decryption](Ciphers_Secret_Message/shifting_decrypt.py)
 
 `Given Ciphertext: a_up4qr_kaiaf0_bujktaz_qm_su4ux_cpbq_ETZ_rhrudm`
 
