@@ -54,3 +54,32 @@ Example Automation Script (Python 2.7):
 
 **Outcome:**
 Once the correct offset is found, the output will include the flag leaked from the stack.
+
+`Flag = THM{format_issue}`
+
+---
+
+## Challenge 3: Repeating-Key XOR Cipher Challenge
+
+**Description:**
+A message was intercepted that was encrypted using a repeating-key XOR cipher. Every message always starts with the header "ORDER:".
+
+**Vulnerability/Insight:**
+The known plaintext header "ORDER:" allows recovery of the XOR key.
+XORing the ciphertext’s first bytes with "ORDER:" recovers the repeating key.
+
+# Exploitation:
+
+**Key Recovery:**
+XOR the first 6 bytes of ciphertext with "ORDER:" to recover the key. This yields SNEAKY.
+Decryption:
+Decrypt the full intercepted ciphertext (across both lines) with the key "SNEAKY".
+Decrypted Message (Example):
+
+**Outcome:**
+The intercepted message reveals Cipher’s next target:
+
+`Target Flag: THM{the_hackfinity_highschool}`
+
+---
+
