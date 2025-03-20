@@ -4,7 +4,8 @@ This repository contains write-ups and proof-of-concept exploits for four challe
 
 ---
 
-## Challenge 1: Passwordless Vault Exploit (Buffer Overflow)
+## Challenge 1: Flag Vault 
+Passwordless Vault Exploit (Buffer Overflow)
 
 **Description:**  
 A C program implements a vault that uses a disabled password prompt. The program reads the username using the insecure `gets()` function into a 100-byte buffer. Although the password prompt is commented out, a local variable holds the hardcoded password `5up3rP4zz123Byte`.
@@ -34,7 +35,8 @@ If the payload is crafted with the correct offset, the vault’s check is bypass
 
 ---
 
-## Challenge 2: Upgraded Vault with Format String Vulnerability
+## Challenge 2: Flag Vault 2 
+Upgraded Vault with Format String Vulnerability
 
 **Description:**
 The vault program was upgraded so that the flag is no longer printed. Instead, it now mocks the user by calling:
@@ -59,7 +61,8 @@ Once the correct offset is found, the output will include the flag leaked from t
 
 ---
 
-## Challenge 3: Repeating-Key XOR Cipher Challenge
+## Challenge 3: Order
+Repeating-Key XOR Cipher Challenge
 
 **Description:**
 A message was intercepted that was encrypted using a repeating-key XOR cipher. Every message always starts with the header "ORDER:".
@@ -68,7 +71,7 @@ A message was intercepted that was encrypted using a repeating-key XOR cipher. E
 The known plaintext header "ORDER:" allows recovery of the XOR key.
 XORing the ciphertext’s first bytes with "ORDER:" recovers the repeating key.
 
-# Exploitation:
+### Exploitation:
 
 **Key Recovery:**
 XOR the first 6 bytes of ciphertext with "ORDER:" to recover the key. This yields SNEAKY.
@@ -79,7 +82,57 @@ Decrypted Message (Example):
 **Outcome:**
 The intercepted message reveals Cipher’s next target:
 
-`Target Flag: THM{the_hackfinity_highschool}`
+`Flag = THM{the_hackfinity_highschool}`
 
 ---
 
+## Challenge 4: Cipher's Secret Message
+Shifting Cipher Challenge
+
+**Description:**
+An old secret message and its encryption algorithm were recovered. The algorithm shifts each alphabetical character by its index in the plaintext (a position-dependent Caesar cipher).
+
+**Encryption Algorithm (Python snippet):**
+
+```python
+def enc(plaintext):
+    return "".join(
+        chr((ord(c) - (base := ord('A') if c.isupper() else ord('a')) + i) % 26 + base) 
+        if c.isalpha() else c
+        for i, c in enumerate(plaintext)
+    )
+```
+Note: The message is encrypted using the above function on the flag (FLAG variable).
+
+**Exploitation:**
+Decryption: Reverse the process by subtracting the character’s index (mod 26) for letters, while leaving non‑letters unchanged.
+
+`Given Ciphertext: a_up4qr_kaiaf0_bujktaz_qm_su4ux_cpbq_ETZ_rhrudm`
+
+`Decrypted Message: a_sm4ll_crypt0_message_to_st4rt_with_THM_cracks`
+
+**Final Flag:**
+Wrap the plaintext within the flag format:
+
+`Flag = THM{a_sm4ll_crypt0_message_to_st4rt_with_THM_cracks}`
+
+---
+
+## Challenge 5: The Game – Tetris Hidden Data
+
+**Description:**
+Cipher has gone dark, hiding critical secrets inside Tetris—a popular video game. In this challenge, the target was to hack Tetris and uncover encrypted data buried within its code.
+
+**Exploitation:**
+
+By running tools called strings on the Tetris binary and searching for the initials of the flag (e.g., THM{), the flag was located.
+Example Command:
+
+```bash
+strings tetris | grep "THM{"
+```
+
+**Outcome:**
+This simple approach revealed the hidden flag embedded within the game’s code.
+
+`Flag = THM{I_CAN_READ_IT_ALL}`
